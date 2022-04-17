@@ -4,18 +4,23 @@
 
 
 //SERÁ UTILIZADO VARIÁVEIS GLOBAIS
-unsigned char memory [6];
-unsigned int mbr; //contém a palavra a ser armazenada na memória e recebe a palavra lida
-unsigned int mar; //endereço a ser lido ou escrito da memória
-unsigned char ir; //opcode da instrução
-unsigned char ro0, ro1; //endereço operando registrador da instrução
-unsigned int imm; //operando imediato da instrução 
-unsigned int pc; //contém o endereço da próxima palavra de instrução a ser buscada na memória 
-unsigned char e,l,g; //não sei
-unsigned int registradores[8];
-unsigned int i=0;
+unsigned char memory [154]; //memória RAM
+unsigned int  mbr, //contém a palavra a ser armazenada na memória e recebe a palavra lida
+              mar, //endereço a ser lido ou escrito da memória
+              imm, //operando imediato da instrução 
+              pc,  //contém o endereço da próxima palavra de instrução a ser buscada na memória 
+              reg[8];
+unsigned char ir,  //opcode da instrução a ser executada
+              ro0, //endereço operando registrador da instrução
+              ro1, //endereço operando registrador da instrução
+              e,
+              l,
+              g;
+
 
 int main (){
+
+
 
 }
 
