@@ -98,6 +98,12 @@ return 0;
 
 
 /*
+flagexecucao=true;
+while(flagexecucao){
+    if(ir==0xa){
+        
+    }
+}
 
 
 
