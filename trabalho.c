@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
 
 
 //SERÁ UTILIZADO VARIÁVEIS GLOBAIS
@@ -16,34 +17,52 @@ unsigned char ir,  //opcode da instrução a ser executada
               e,
               l,
               g;
-
+bool flagexecucao=true;
+bool flagrepeticao=false;
 
 int main (){
 //ALOCAR MEMÓRIA PARA TESTES
 memory [0]= 0x13;
-memory [1]= 0x0;
-memory [2]= 0x0;
+memory [1]= 0xe0;
+memory [2]= 0x00;
 memory [3]= 0x1e;
-memory [4]= 0x16;
-memory [5]= 0x0;
+memory [4]= 0x13;
+memory [5]= 0x20;
 memory [6]= 0x0;
-memory [7]= 0x14;
+memory [7]= 0x24;
 memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
 memory [12]= 0x16;
+memory [13]= 0x0;
+memory [14]= 0x0;
+memory [15]= 0x14;
+memory [16]= 0x14;
+memory [17]= 0x0;
+memory [18]= 0x0;
+memory [19]= 0x26;
+memory [20]= 0x0;
+memory [21]= 0x0;
+memory [22]= 0x0;
+memory [23]= 0x0;
+memory [24]= 0x14;
 memory [30]= 0x0;
 memory [31]= 0x0;
 memory [32]= 0x0;
 memory [33]= 0xf;
+memory [36]= 0x0;
+memory [37]= 0x0;
+memory [38]= 0x0;
+memory [39]= 0x8;
 
 mbr=0;
+bool flagrepeticao=false;
 printf("mbr inicio: %x\n", mbr);
 
 
 
-for(int i=0; i<2;i++){
+for(int i=0; i<3;i++){
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
     mbr= memory[mar++] << 8;             // 0000 0000 0000 0000 0000 0000 0001 0011
@@ -59,16 +78,30 @@ for(int i=0; i<2;i++){
 
     //IF PARA O LOAD
     if (ir==0x13){
+        if(flagrepeticao==false){
         ro0=(mbr & 0x00e00000) >>21;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
         printf("Ro0: %02x\n",ro0); 
         mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
         printf("Mar: %08x\n", mar);
+
+        }
+        else{
+        ro1=(mbr & 0x00e00000);       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
+        printf("Ro1: %032x\n",ro1); 
+        mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
+        printf("Mar: %08x\n", mar);
+        }
+
     }else if (ir==0x16){
         //addi
         ro0=(mbr & 0x00e00000) >>21; 
         printf("Ro0 segunda: %02x\n",ro0); 
         imm=(mbr & 0x001fffff);
         printf("Imm segunda: %08x\n", imm);
+
+    }else if (ir==0x2){
+        //add
+        
 
     }
 
@@ -80,14 +113,18 @@ for(int i=0; i<2;i++){
     mbr= (mbr | memory [mar++]) << 8;
     mbr= memory [mar++];
     reg[ro0]=mbr;
-
+    flagrepeticao=true;
     printf("reg: %08x\n", reg[ro0]);
+    printf("flag: %d\n", flagrepeticao);
     pc +=4;
     } else if(ir==0x16){
         reg[ro0]=imm+reg[ro0];
         pc +=4;
         printf("final: %08x\n", reg[ro0]);
 
+    }else if(ir==0x2){
+        reg[ro0]=reg[ro0]+reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
     }
 
 }
@@ -104,8 +141,7 @@ while(flagexecucao){
         
     }
 }
-
-
+*/
 
 //entrada por arquivo texto que ele irá explicar mais pra frente
 
