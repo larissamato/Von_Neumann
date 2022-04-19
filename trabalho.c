@@ -62,6 +62,7 @@ printf("mbr inicio: %x\n", mbr);
 
 
 
+
 for(int i=0; i<3;i++){
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
@@ -78,16 +79,17 @@ for(int i=0; i<3;i++){
 
     //IF PARA O LOAD
     if (ir==0x13){
+
         if(flagrepeticao==false){
         ro0=(mbr & 0x00e00000) >>21;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
         printf("Ro0: %02x\n",ro0); 
         mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
         printf("Mar: %08x\n", mar);
-
-        }
-        else{
-        ro1=(mbr & 0x00e00000);       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
-        printf("Ro1: %032x\n",ro1); 
+        }else 
+        if (flagrepeticao==true){
+        ro1=(mbr & 0x001e0000) >>18;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
+        printf("Ro1: %02x\n",ro1);     
+        printf("teste: %8x\n",mbr);
         mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
         printf("Mar: %08x\n", mar);
         }
