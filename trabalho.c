@@ -90,7 +90,7 @@ for(int i=0; i<4;i++){
         else if (flagrepeticao==true)
         {
             //ro1=(mbr & 0x001e0000) >>18;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
-            ro1=(mbr & 0x001e0000) >>18;
+            ro1=(mbr & 0x00e00000) >>21;
             printf("Ro1: %08x\n",ro1);     
             printf("teste: %8x\n",mbr);
             mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
