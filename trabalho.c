@@ -34,7 +34,7 @@ memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
-memory [12]= 0x16;
+memory [12]= 0x19;
 memory [13]= 0x0;
 memory [14]= 0x0;
 memory [15]= 0x14;
@@ -104,6 +104,27 @@ for(int i=0; i<4;i++){
         imm=(mbr & 0x001fffff);
         printf("Imm: %08x\n", imm);
 
+    }else if (ir==0x17){
+        //addi
+        ro0=(mbr & 0x00e00000) >>21; 
+        printf("Ro0: %02x\n",ro0); 
+        imm=(mbr & 0x001fffff);
+        printf("Imm: %08x\n", imm);
+
+    }else if (ir==0x18){
+        //addi
+        ro0=(mbr & 0x00e00000) >>21; 
+        printf("Ro0: %02x\n",ro0); 
+        imm=(mbr & 0x001fffff);
+        printf("Imm: %08x\n", imm);
+
+    }else if (ir==0x19){
+        //addi
+        ro0=(mbr & 0x00e00000) >>21; 
+        printf("Ro0: %02x\n",ro0); 
+        imm=(mbr & 0x001fffff);
+        printf("Imm: %08x\n", imm);
+
     }
 
     //EXECUÇÃO DA INSTRUÇÃO
@@ -135,7 +156,25 @@ for(int i=0; i<4;i++){
     } 
     else if(ir==0x16)
     {
-        reg[ro0]=imm+reg[ro0];
+        reg[ro0]=reg[ro0]+imm;
+        printf("final: %08x\n", reg[ro0]);
+        pc +=4;
+    } 
+    else if(ir==0x17)
+    {
+        reg[ro0]=reg[ro0]-imm;
+        printf("final: %08x\n", reg[ro0]);
+        pc +=4;
+    } 
+    else if(ir==0x18)
+    {
+        reg[ro0]=imm*reg[ro0];
+        printf("final: %08x\n", reg[ro0]);
+        pc +=4;
+    } 
+    else if(ir==0x19)
+    {
+        reg[ro0]=reg[ro0]/imm;
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     }
