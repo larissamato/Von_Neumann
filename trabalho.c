@@ -34,7 +34,7 @@ memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
-memory [12]= 0x19;
+memory [12]= 0x15;
 memory [13]= 0x0;
 memory [14]= 0x0;
 memory [15]= 0x14;
@@ -97,6 +97,13 @@ for(int i=0; i<4;i++){
             printf("Mar: %08x\n", mar);
         }
 
+    }else if (ir==0x15){
+        //addi
+        ro0=(mbr & 0x00e00000) >>21; 
+        printf("Ro0: %02x\n",ro0); 
+        imm=(mbr & 0x001fffff);
+        printf("Imm: %08x\n", imm);
+
     }else if (ir==0x16){
         //addi
         ro0=(mbr & 0x00e00000) >>21; 
@@ -153,7 +160,13 @@ for(int i=0; i<4;i++){
            pc +=4;
         }
 
-    } 
+    }
+     else if(ir==0x15)
+    {
+        reg[ro0]=imm;
+        printf("final: %08x\n", reg[ro0]);
+        pc +=4;
+    }  
     else if(ir==0x16)
     {
         reg[ro0]=reg[ro0]+imm;
