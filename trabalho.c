@@ -82,14 +82,23 @@ i=i+1;
 
 
     //DECODIFICAÇÃO DA INSTRUÇÃO
-    ir=mbr >> 24;                           //desloca 24 bits a direita ->> 0000 0000 0000 0000 0000 0000 0001 0011
+    ir=mbr >> 24;                    //desloca 24 bits a direita ->> 0000 0000 0000 0000 0000 0000 0001 0011
     printf("IR: %02x \n", ir);
 
-    //IF PARA O LOAD
     if (ir==0x00){
         printf("Parada!!!\n");
         flagexecucao=false;
     }
+    if(ir==0x01){
+        printf("oi");
+    }
+    if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa){
+
+        ro0=(mbr & 0x00e00000) >>21; 
+        ro1=(mbr & 0x001e0000) >>18; 
+
+    }
+
     if (ir==0x13){
 
         if(flagrepeticao==false)
@@ -108,35 +117,7 @@ i=i+1;
             printf("Mar: %08x\n", mar);
         }
 
-    }else if (ir==0x15){
-        //addi
-        ro0=(mbr & 0x00e00000) >>21; 
-        printf("Ro0: %02x\n",ro0); 
-        imm=(mbr & 0x001fffff);
-        printf("Imm: %08x\n", imm);
-
-    }else if (ir==0x16){
-        //addi
-        ro0=(mbr & 0x00e00000) >>21; 
-        printf("Ro0: %02x\n",ro0); 
-        imm=(mbr & 0x001fffff);
-        printf("Imm: %08x\n", imm);
-
-    }else if (ir==0x17){
-        //addi
-        ro0=(mbr & 0x00e00000) >>21; 
-        printf("Ro0: %02x\n",ro0); 
-        imm=(mbr & 0x001fffff);
-        printf("Imm: %08x\n", imm);
-
-    }else if (ir==0x18){
-        //addi
-        ro0=(mbr & 0x00e00000) >>21; 
-        printf("Ro0: %02x\n",ro0); 
-        imm=(mbr & 0x001fffff);
-        printf("Imm: %08x\n", imm);
-
-    }else if (ir==0x19){
+        }else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19){
         //addi
         ro0=(mbr & 0x00e00000) >>21; 
         printf("Ro0: %02x\n",ro0); 
@@ -245,6 +226,12 @@ i=i+1;
         pc +=4;
     }
     else if(ir==0x0b)
+    {
+        reg[ro0]=!reg[ro0];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    else if(ir==0x14)
     {
         reg[ro0]=!reg[ro0];
         printf("resultado: %x\n",reg[ro0]);
