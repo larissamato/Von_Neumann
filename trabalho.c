@@ -34,7 +34,7 @@ memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
-memory [12]= 0x15;
+memory [12]= 0x16;
 memory [13]= 0x0;
 memory [14]= 0x0;
 memory [15]= 0x14;
@@ -47,6 +47,11 @@ memory [21]= 0x0;
 memory [22]= 0x0;
 memory [23]= 0x0;
 memory [24]= 0x14;
+memory [25]= 0x0;
+memory [26]= 0x0;
+memory [27]= 0x0;
+memory [28]= 0x0;
+memory [29]= 0x0;
 memory [30]= 0x0;
 memory [31]= 0x0;
 memory [32]= 0x0;
@@ -57,13 +62,15 @@ memory [38]= 0x0;
 memory [39]= 0x8;
 
 mbr=0;
+ir=1;
 
 printf("mbr inicio: %x\n", mbr);
 
 
 
-
-for(int i=0; i<4;i++){
+while(flagexecucao){
+int i;
+i=i+1;
     printf("\t\t\t\t RODADA %d\n", i);
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
@@ -79,6 +86,10 @@ for(int i=0; i<4;i++){
     printf("IR: %02x \n", ir);
 
     //IF PARA O LOAD
+    if (ir==0x00){
+        printf("Parada!!!\n");
+        flagexecucao=false;
+    }
     if (ir==0x13){
 
         if(flagrepeticao==false)
