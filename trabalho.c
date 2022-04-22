@@ -182,7 +182,7 @@ i=i+1;
     {
         reg[ro0]=reg[ro0]+imm;
         printf("final: %08x\n", reg[ro0]);
-        pc +=4;
+        pc +=8;
     } 
     else if(ir==0x17)
     {
@@ -223,6 +223,30 @@ i=i+1;
     else if(ir==0x05)
     {
         reg[ro0]=reg[ro0]/reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    else if(ir==0x08)
+    {
+        reg[ro0]=reg[ro0]&reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    else if(ir==0x09)
+    {
+        reg[ro0]=reg[ro0]|reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    else if(ir==0x0a)
+    {
+        reg[ro0]=reg[ro0]^reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    else if(ir==0x0b)
+    {
+        reg[ro0]=!reg[ro0];
         printf("resultado: %x\n",reg[ro0]);
         pc +=4;
     }
