@@ -167,14 +167,11 @@ i=i+1;
     else if(ir==0x14)
     {
     mbr=reg[ro0];
-    memory[mar++]=mbr>>8;
-    printf("%x",memory[mar]);     
     memory [mar++]=mbr>>8; 
-    printf("%x",memory[mar]);    
+    memory [mar++]=mbr>>8;    
     memory [mar++]=mbr>>8;
-    printf("%x",memory[mar]); 
-    memory [mar++]=mbr;
-    printf("%08x",mbr); 
+    memory [mar]=mbr;
+    printf("%8x",memory[mar]); 
     printf("\n");
     pc +=4;
     }
