@@ -170,3 +170,25 @@ while(flagexecucao){
 
 //gcc trabalho.c -o a.out -lm
 //./a.out
+
+
+
+        else if(ir==14){
+            flagguarda=mar;
+            ro0=(mbr & 0x00e00000) >>21;      
+            printf("Ro0: %02x\n",ro0); 
+            mar=(mbr & 0x001fffff); 
+            printf("Mar: %08x\n", mar);
+
+        }
+
+    else if(ir==0x14)
+    {
+    memory[mar++]=mbr>>24;         
+    memory [mar++]=mbr>>24;    
+    memory [mar++])=mbr>>24;
+    memory [mar++]=mbr;
+    printf("resultado: %x\n",reg[ro0]);
+    mar=flagguarda;
+    pc +=4;
+    }

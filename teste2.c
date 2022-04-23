@@ -19,7 +19,6 @@ unsigned char ir,  //opcode da instrução a ser executada
               g;
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
-unsigned int flagguarda=0;
 
 int main (){
 //ALOCAR MEMÓRIA PARA TESTES
@@ -121,13 +120,6 @@ i=i+1;
             printf("Mar: %08x\n", mar);
         }      
     }
-     else if(ir==14){
-            ro0=(mbr & 0x00e00000) >>21;      
-            printf("Ro0: %02x\n",ro0); 
-            mar=(mbr & 0x001fffff); 
-            printf("Mar: %08x\n", mar);
-
-        }
         else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19){
         //addi
         ro0=(mbr & 0x00e00000) >>21; 
@@ -164,20 +156,6 @@ i=i+1;
         }
 
     }
-    else if(ir==0x14)
-    {
-    mbr=reg[ro0];
-    memory[mar++]=mbr>>24;
-    printf("%x",memory[mar]);     
-    memory [mar++]=mbr>>24; 
-    printf("%x",memory[mar]);    
-    memory [mar++]=mbr>>24;
-    printf("%x",memory[mar]); 
-    memory [mar++]=mbr>>24;
-    printf("%x",memory[mar]); 
-    printf("\n");
-    pc +=4;
-    }
      else if(ir==0x15)
     {
         reg[ro0]=imm;
@@ -188,7 +166,7 @@ i=i+1;
     {
         reg[ro0]=reg[ro0]+imm;
         printf("final: %08x\n", reg[ro0]);
-        pc +=4;
+        pc +=8;
     } 
     else if(ir==0x17)
     {
