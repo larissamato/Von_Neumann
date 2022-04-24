@@ -47,7 +47,7 @@ memory [20]= 0x0;
 memory [21]= 0x0;
 memory [22]= 0x0;
 memory [23]= 0x0;
-memory [24]= 0x14;
+memory [24]= 0x0;
 memory [25]= 0x0;
 memory [26]= 0x0;
 memory [27]= 0x0;
@@ -75,6 +75,7 @@ i=i+1;
     printf("\t\t\t\t RODADA %d\n", i);
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
+    printf("mar%x\n",mar);
     mbr= memory[mar++] << 8;             // 0000 0000 0000 0000 0000 0000 0001 0011
     mbr= (mbr | memory [mar++]) << 8;    // 0000 0000 0000 0000 0001 0011 0000 0000
     mbr= (mbr | memory [mar++]) << 8;
@@ -167,13 +168,15 @@ i=i+1;
     else if(ir==0x14)
     {
     mbr=reg[ro0];
+    printf("%08x",mbr); 
     memory [mar++]=mbr>>8; 
     memory [mar++]=mbr>>8;    
     memory [mar++]=mbr>>8;
     memory [mar]=mbr;
-    printf("%8x",memory[mar]); 
+    printf("%x",memory[mar]); 
     printf("\n");
     pc +=4;
+    mar=0;
     }
      else if(ir==0x15)
     {
