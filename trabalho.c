@@ -168,7 +168,7 @@ i=i+1;
     else if(ir==0x14)
     {
     mbr=reg[ro0];
-    printf("%08x",mbr); 
+    //printf("%08x",mbr); 
     memory [mar++]=mbr>>8; 
     memory [mar++]=mbr>>8;    
     memory [mar++]=mbr>>8;
@@ -251,12 +251,6 @@ i=i+1;
         pc +=4;
     }
     else if(ir==0x0b)
-    {
-        reg[ro0]=!reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x14)
     {
         reg[ro0]=!reg[ro0];
         printf("resultado: %x\n",reg[ro0]);
