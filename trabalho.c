@@ -19,7 +19,7 @@ unsigned char ir,  //opcode da instrução a ser executada
               g;
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
-unsigned int flagguarda=0;
+
 
 int main (){
 //ALOCAR MEMÓRIA PARA TESTES
@@ -46,7 +46,7 @@ memory [19]= 0x26;
 memory [20]= 0x0;
 memory [21]= 0x0;
 memory [22]= 0x0;
-memory [23]= 0x1;
+memory [23]= 0x0;
 memory [24]= 0x0;
 memory [25]= 0x0;
 memory [26]= 0x0;
@@ -61,13 +61,9 @@ memory [36]= 0x0;
 memory [37]= 0x0;
 memory [38]= 0x0;
 memory [39]= 0x8;
-
 mbr=0;
 ir=1;
-
 printf("mbr inicio: %x\n", mbr);
-
-
 
 while(flagexecucao){
 int i;
@@ -102,6 +98,12 @@ i=i+1;
     }
     else if(ir==0xb){
         ro0=(mbr & 0x00e00000) >>21; 
+    }
+
+    else if (ir==0xc || ir==0xd || ir==0xe || ir==0xf || ir==0x10 || ir==0x11 || ir==0x12){
+        mar=(mbr & 0x001fffff); 
+        printf("Mar: %08x\n", mar);
+
     }
 
     else if (ir==0x13){
@@ -139,7 +141,131 @@ i=i+1;
     }
 
     //EXECUÇÃO DA INSTRUÇÃO
-    if(ir==0x13){
+    //add
+    if(ir==0x02)
+    {
+        reg[ro0]=reg[ro1]+reg[ro0];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //sub
+    else if(ir==0x03)
+    {
+        reg[ro0]=reg[ro0]-reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //mul
+    else if(ir==0x04)
+    {
+        reg[ro0]=reg[ro0]*reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //div
+    else if(ir==0x05)
+    {
+        reg[ro0]=reg[ro0]/reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //cmp
+    else if(ir==0x06)
+    {
+       if(reg[ro0]==reg[ro1]){
+           e=1;
+           printf("Registrador e:%x\n", e);
+           pc+=4;
+       }else if(reg[ro0]<reg[ro1]){
+           l=1;
+           g=0;
+           e=0;
+           printf("Registrador e:%x\n",e);
+           printf("Registrador l:%x\n",l);
+           printf("Registrador g:%x\n",g);
+           pc+=4;
+       }else if(reg[ro0]>reg[ro1]){
+           l=0;
+           g=1;
+           e=0;
+           printf("Registrador e:%x\n",e);
+           printf("Registrador l:%x\n",l);
+           printf("Registrador g:%x\n",g);
+           pc+=4;
+       }
+    }
+    //movr
+    else if(ir==0x07)
+    {
+        reg[ro0]=reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //and
+    else if(ir==0x08)
+    {
+        reg[ro0]=reg[ro0]&reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //or
+    else if(ir==0x09)
+    {
+        reg[ro0]=reg[ro0]|reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //xor
+    else if(ir==0x0a)
+    {
+        reg[ro0]=reg[ro0]^reg[ro1];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //not
+    else if(ir==0x0b)
+    {
+        reg[ro0]=!reg[ro0];
+        printf("resultado: %x\n",reg[ro0]);
+        pc +=4;
+    }
+    //je
+    else if(ir==0xc)
+    {
+        pc +=4;
+    }
+    //jne
+    else if(ir==0xd)
+    {
+        pc +=4;
+    }
+    //jl
+    else if(ir==0xe)
+    {
+        pc +=4;
+    }
+    //jle
+    else if(ir==0xf)
+    {
+        pc +=4;
+    }
+    //jg
+    else if(ir==0x10)
+    {
+        pc +=4;
+    }
+    //jge
+    else if(ir==0x11)
+    {
+        pc +=4;
+    }
+    //jmp
+    else if(ir==0x12)
+    {
+        pc +=4;
+    }
+    //load
+    else if(ir==0x13){
 
         if(flagrepeticao==false)
         {
@@ -165,6 +291,7 @@ i=i+1;
         }
 
     }
+    //store
     else if(ir==0x14)
     {
     mbr=reg[ro0];
@@ -178,130 +305,58 @@ i=i+1;
     pc+=4;
     
     }
+    //movi
      else if(ir==0x15)
     {
         reg[ro0]=imm;
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     }  
+    //addi
     else if(ir==0x16)
     {
         reg[ro0]=reg[ro0]+imm;
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     } 
+    //subi
     else if(ir==0x17)
     {
         reg[ro0]=reg[ro0]-imm;
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     } 
+    //muli
     else if(ir==0x18)
     {
         reg[ro0]=imm*reg[ro0];
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     } 
+    //divi
     else if(ir==0x19)
     {
         reg[ro0]=reg[ro0]/imm;
         printf("final: %08x\n", reg[ro0]);
         pc +=4;
     }
-      else if(ir==0x1a)
+    //lsh
+    else if(ir==0x1a)
     {   
         printf("teste%x",reg[ro0]);
         reg[ro0]=reg[ro0]<<imm;
         printf("final: %012x\n", reg[ro0]);
         pc +=4;
     }
-      else if(ir==0x1b)
+    //rsh
+    else if(ir==0x1b)
     {   
         printf("teste%x",reg[ro0]);
         reg[ro0]=reg[ro0]>>imm;
         printf("final: %012x\n", reg[ro0]);
         pc +=4;
     }
-    else if(ir==0x02)
-    {
-        reg[ro0]=reg[ro1]+reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x03)
-    {
-        reg[ro0]=reg[ro0]-reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x04)
-    {
-        reg[ro0]=reg[ro0]*reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x05)
-    {
-        reg[ro0]=reg[ro0]/reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x06)
-    {
-       if(reg[ro0]==reg[ro1]){
-           e=1;
-           printf("Registrador e:%x\n", e);
-           pc+=4;
-       }else if(reg[ro0]<reg[ro1]){
-           l=1;
-           g=0;
-           e=0;
-           printf("Registrador e:%x\n",e);
-           printf("Registrador l:%x\n",l);
-           printf("Registrador g:%x\n",g);
-           pc+=4;
-       }else if(reg[ro0]>reg[ro1]){
-           l=0;
-           g=1;
-           e=0;
-           printf("Registrador e:%x\n",e);
-           printf("Registrador l:%x\n",l);
-           printf("Registrador g:%x\n",g);
-           pc+=4;
-       }
-    }
 
-    else if(ir==0x07)
-    {
-        reg[ro0]=reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-     
-    else if(ir==0x08)
-    {
-        reg[ro0]=reg[ro0]&reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x09)
-    {
-        reg[ro0]=reg[ro0]|reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x0a)
-    {
-        reg[ro0]=reg[ro0]^reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x0b)
-    {
-        reg[ro0]=!reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
     printf("----------------------------------------------------------------\n");
 }
 return 0;
