@@ -35,7 +35,7 @@ memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
-memory [12]= 0x16;
+memory [12]= 0xc;
 memory [13]= 0x0;
 memory [14]= 0x0;
 memory [15]= 0x14;
@@ -230,39 +230,76 @@ i=i+1;
         pc +=4;
     }
     //je
-    else if(ir==0xc)
-    {
-        pc +=4;
+    else if(ir==0x0c)
+    {   if(e==1){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
+
     }
     //jne
-    else if(ir==0xd)
+    else if(ir==0x0d)
     {
-        pc +=4;
+       if(e==0){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
     }
     //jl
-    else if(ir==0xe)
+    else if(ir==0x0e)
     {
-        pc +=4;
+        if(l==1){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
     }
     //jle
-    else if(ir==0xf)
+    else if(ir==0x0f)
     {
-        pc +=4;
+        if(e==1 && l==1){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
     }
     //jg
     else if(ir==0x10)
     {
-        pc +=4;
+        if(g==1){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
     }
     //jge
     else if(ir==0x11)
     {
-        pc +=4;
+        if(e==1 || g==1){
+        pc=mar;
+        printf("pc: %x",pc);
+    }else{
+        pc=+4;
+        printf("pc:%x",pc);
+    }
     }
     //jmp
     else if(ir==0x12)
     {
-        pc +=4;
+        pc=mar;
+        printf("pc: %x", pc);
     }
     //load
     else if(ir==0x13){
