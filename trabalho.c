@@ -35,7 +35,7 @@ memory [8]= 0x2;
 memory [9]= 0x4;
 memory [10]= 0x0;
 memory [11]= 0x0;
-memory [12]= 0xc;
+memory [12]= 0x16;
 memory [13]= 0x0;
 memory [14]= 0x0;
 memory [15]= 0x14;
@@ -61,17 +61,25 @@ memory [36]= 0x0;
 memory [37]= 0x0;
 memory [38]= 0x0;
 memory [39]= 0x8;
+memory [40]= 0x0;
+memory [41]= 0x0;
+memory [42]= 0x0;
+memory [43]= 0x0;
+memory [44]= 0x0;
 mbr=0;
 ir=1;
 printf("mbr inicio: %x\n", mbr);
 
-while(flagexecucao){
+/*while(flagexecucao){
+int i;
+i=i+1;*/
+for(int a=0;a<8;a++){
 int i;
 i=i+1;
     printf("\t\t\t\t RODADA %d\n", i);
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
-    printf("mar%x\n",mar);
+    printf("mar:%x\n",mar);
     mbr= memory[mar++] << 8;             // 0000 0000 0000 0000 0000 0000 0001 0011
     mbr= (mbr | memory [mar++]) << 8;    // 0000 0000 0000 0000 0001 0011 0000 0000
     mbr= (mbr | memory [mar++]) << 8;
@@ -83,31 +91,31 @@ i=i+1;
     ir=mbr >> 24;                    //desloca 24 bits a direita ->> 0000 0000 0000 0000 0000 0000 0001 0011
     printf("IR: %02x \n", ir);
 
-    if (ir==0x00){
+    if (ir==0x00)
+    {
         printf("Parada!!!\n");
         flagexecucao=false;
     }
-    else if(ir==0x01){
+    else if(ir==0x01)
+    {
         printf("oi");
     }
-    else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa){
-
+    else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa)
+    {
         ro0=(mbr & 0x00e00000) >>21; 
         ro1=(mbr & 0x001e0000) >>18; 
-
     }
-    else if(ir==0xb){
+    else if(ir==0xb)
+    {
         ro0=(mbr & 0x00e00000) >>21; 
     }
-
-    else if (ir==0xc || ir==0xd || ir==0xe || ir==0xf || ir==0x10 || ir==0x11 || ir==0x12){
+    else if (ir==0xc || ir==0xd || ir==0xe || ir==0xf || ir==0x10 || ir==0x11 || ir==0x12)
+    {
         mar=(mbr & 0x001fffff); 
         printf("Mar: %08x\n", mar);
-
     }
-
-    else if (ir==0x13){
-
+    else if (ir==0x13)
+    {
         if(flagrepeticao==false)
         {
             ro0=(mbr & 0x00e00000) >>21;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
@@ -124,20 +132,20 @@ i=i+1;
             printf("Mar: %08x\n", mar);
         }      
     }
-     else if(ir==14){
+    else if(ir==0x14)
+        {
             ro0=(mbr & 0x00e00000) >>21;      
             printf("Ro0: %02x\n",ro0); 
-            mar=(mbr & 0x001fffff); 
-            printf("Mar: %08x\n", mar);
-
+            mar=0x26;//(mbr & 0x001fffff); 
+            printf("Maaar: %08x\n", mar);
         }
-        else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19 || ir==0x1a || ir==0x1b){
+     else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19 || ir==0x1a || ir==0x1b)
+    {
         //addi
         ro0=(mbr & 0x00e00000) >>21; 
         printf("Ro0: %02x\n",ro0); 
         imm=(mbr & 0x001fffff);
         printf("Imm: %08x\n", imm);
-
     }
 
     //EXECUÇÃO DA INSTRUÇÃO
@@ -233,10 +241,10 @@ i=i+1;
     else if(ir==0x0c)
     {   if(e==1){
         pc=mar;
-        printf("pc: %x",pc);
+        printf("pc: %8x\n",pc);
     }else{
-        pc=+4;
-        printf("pc:%x",pc);
+        printf("pc:%x\n",pc);
+        pc=+8;
     }
 
     }
@@ -332,13 +340,17 @@ i=i+1;
     else if(ir==0x14)
     {
     mbr=reg[ro0];
-    //printf("%08x",mbr); 
-    memory [mar++]=mbr>>8; 
-    memory [mar++]=mbr>>8;    
-    memory [mar++]=mbr>>8;
-    memory [mar]=mbr;
-    printf("%x",memory[mar]); 
+    memory [mar++]=(mbr>>24) & 0x0000000f; 
+    memory [mar++]=(mbr>>16) & 0x00000f00;    
+    memory [mar++]=(mbr>>8) & 0x000f0000;
+    memory [mar]=mbr ;
+    for(int a=mar; a<=mar+7;a++){
+    //printf("%08x\n",a); 
+    printf("%2x",memory[a]);}
+   
+
     printf("\n");
+    
     pc+=4;
     
     }
@@ -395,7 +407,11 @@ i=i+1;
     }
 
     printf("----------------------------------------------------------------\n");
+//}
 }
+
+
+
 return 0;
 
 
