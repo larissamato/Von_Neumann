@@ -43,10 +43,10 @@ memory [16]= 0x14;
 memory [17]= 0x0;
 memory [18]= 0x0;
 memory [19]= 0x26;
-memory [20]= 0x12;
+memory [20]= 0x1;
 memory [21]= 0x0;
 memory [22]= 0x0;
-memory [23]= 0x19;
+memory [23]= 0x0;
 memory [24]= 0x0;
 memory [25]= 0x0;
 memory [26]= 0x0;
@@ -98,7 +98,7 @@ i=i+1;*/
     }
     else if(ir==0x01)
     {
-        printf("oi");
+        pc+=1;
     }
     else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa)
     {
