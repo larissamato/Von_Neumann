@@ -43,10 +43,10 @@ memory [16]= 0x14;
 memory [17]= 0x0;
 memory [18]= 0x0;
 memory [19]= 0x26;
-memory [20]= 0x0;
+memory [20]= 0x12;
 memory [21]= 0x0;
 memory [22]= 0x0;
-memory [23]= 0x0;
+memory [23]= 0x19;
 memory [24]= 0x0;
 memory [25]= 0x0;
 memory [26]= 0x0;
@@ -70,12 +70,12 @@ mbr=0;
 ir=1;
 printf("mbr inicio: %x\n", mbr);
 
-/*while(flagexecucao){
-int i;
-i=i+1;*/
-for(int a=0;a<8;a++){
+while(flagexecucao){
 int i;
 i=i+1;
+/*for(int a=0;a<8;a++){
+int i;
+i=i+1;*/
     printf("\t\t\t\t RODADA %d\n", i);
     //ALOCANDO INSTRUÇÃO NO MBR
     mar=pc;
@@ -239,12 +239,14 @@ i=i+1;
     }
     //je
     else if(ir==0x0c)
-    {   if(e==1){
+    {   
+        if(e==1){
         pc=mar;
         printf("pc: %8x\n",pc);
-    }else{
+    }else {
+
+        pc+=4;
         printf("pc:%x\n",pc);
-        pc=+8;
     }
 
     }
@@ -253,10 +255,10 @@ i=i+1;
     {
        if(e==0){
         pc=mar;
-        printf("pc: %x",pc);
+        printf("pc: %x\n",pc);
     }else{
-        pc=+4;
-        printf("pc:%x",pc);
+        pc+=4;
+        printf("pc:%x\n",pc);
     }
     }
     //jl
@@ -266,18 +268,18 @@ i=i+1;
         pc=mar;
         printf("pc: %x",pc);
     }else{
-        pc=+4;
+        pc+=4;
         printf("pc:%x",pc);
     }
     }
     //jle
     else if(ir==0x0f)
     {
-        if(e==1 && l==1){
+        if(e==1 || l==1){
         pc=mar;
         printf("pc: %x",pc);
     }else{
-        pc=+4;
+        pc+=4;
         printf("pc:%x",pc);
     }
     }
@@ -288,7 +290,7 @@ i=i+1;
         pc=mar;
         printf("pc: %x",pc);
     }else{
-        pc=+4;
+        pc+=4;
         printf("pc:%x",pc);
     }
     }
@@ -299,7 +301,7 @@ i=i+1;
         pc=mar;
         printf("pc: %x",pc);
     }else{
-        pc=+4;
+        pc+=4;
         printf("pc:%x",pc);
     }
     }
