@@ -136,7 +136,7 @@ i=i+1;
         {
             ro0=(mbr & 0x00e00000) >>21;      
             printf("Ro0: %02x\n",ro0); 
-            mar=0x26;//(mbr & 0x001fffff); 
+            mar=(mbr & 0x001fffff); 
             printf("Maaar: %08x\n", mar);
         }
      else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19 || ir==0x1a || ir==0x1b)
@@ -341,12 +341,18 @@ i=i+1;
     {
     mbr=reg[ro0];
     memory [mar++]=(mbr>>24) & 0x0000000f; 
+    printf("Memoria: %02x\n", memory[38]);
     memory [mar++]=(mbr>>16) & 0x00000f00;    
+     printf("Memoria: %02x\n", memory[39]);
     memory [mar++]=(mbr>>8) & 0x000f0000;
+    printf("Memoria: %02x\n", memory[40]);
     memory [mar]=mbr ;
-    for(int a=mar; a<=mar+7;a++){
+    printf("Memoria: %02x\n", memory[41]);
+    printf("Maaar: %08x\n", mar);
+   /* for(unsigned int a=mar; a<=mar+4;a++){
     //printf("%08x\n",a); 
-    printf("%2x",memory[a]);}
+    printf("%x\n",mar);}
+    //printf("%x",memory[a]);}*/
    
 
     printf("\n");
