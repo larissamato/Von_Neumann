@@ -21,63 +21,44 @@ bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
 
-int main (){
-//ALOCAR MEMÓRIA PARA TESTES
-memory [0]= 0x13;
-memory [1]= 0x00;
-memory [2]= 0x00;
-memory [3]= 0x1e;
-memory [4]= 0x13;
-memory [5]= 0x20;
-memory [6]= 0x0;
-memory [7]= 0x24;
-memory [8]= 0x2;
-memory [9]= 0x4;
-memory [10]= 0x0;
-memory [11]= 0x0;
-memory [12]= 0x16;
-memory [13]= 0x0;
-memory [14]= 0x0;
-memory [15]= 0x14;
-memory [16]= 0x14;
-memory [17]= 0x0;
-memory [18]= 0x0;
-memory [19]= 0x26;
-memory [20]= 0x1;
-memory [21]= 0x0;
-memory [22]= 0x0;
-memory [23]= 0x0;
-memory [24]= 0x0;
-memory [25]= 0x0;
-memory [26]= 0x0;
-memory [27]= 0x0;
-memory [28]= 0x0;
-memory [29]= 0x0;
-memory [30]= 0x0;
-memory [31]= 0x0;
-memory [32]= 0x0;
-memory [33]= 0xf;
-memory [36]= 0x0;
-memory [37]= 0x0;
-memory [38]= 0x0;
-memory [39]= 0x8;
-memory [40]= 0x0;
-memory [41]= 0x0;
-memory [42]= 0x0;
-memory [43]= 0x0;
-memory [44]= 0x0;
-mbr=0;
-ir=1;
-printf("mbr inicio: %x\n", mbr);
+void Print() {
+    system("clear||cls");
+    printf("\n                      Máquina de Von Neuman\n\n");
+    //printf("Estágio: %s\n", phase);
+    printf(
+            "%s: 0x%x%10s: 0x%x%10s: 0x%x%10s: "
+            "0x%x%10s: 0x%x%10s: 0x%x%10s: %d%10s: "
+            "0x%x%10s: 0x%x%10s: 0x%x%10s: 0x%x"
+            "%10s :%c%10s :%c%10s :%c",
+            "R0", reg[0],
+            "R1", reg[1],
+            "R2", reg[2],
+            "R3", reg[3],
+            "RO0", ro0,
+            "RO1", ro1,
+            "\nIR", ir,
+            "MBR", mbr,
+            "MAR", mar,
+            "IMM", imm,
+            "PC", pc,
+            "\nE", e,
+            "L", l,
+            "G", g);
+    int p;
+    printf("\n\nMemória:\n");
+    for (p = 0; p < 154; p++) {
+        short int mem = memory[p];
+        if (mem < 0) {
+            mem = mem - 65280;
+        }
+        printf("  %03x:0x%03x", p, mem);
+        if (p % 7 == 6) {
+            printf("\n");
+        }
+    }
+}
 
-while(flagexecucao){
-int i;
-i=i+1;
-/*for(int a=0;a<8;a++){
-int i;
-i=i+1;*/
-    printf("\t\t\t\t RODADA %d\n", i);
-    //ALOCANDO INSTRUÇÃO NO MBR
+void Busca (){
     mar=pc;
     printf("mar:%x\n",mar);
     mbr= memory[mar++] << 8;             // 0000 0000 0000 0000 0000 0000 0001 0011
@@ -88,10 +69,12 @@ i=i+1;*/
 
 
     //DECODIFICAÇÃO DA INSTRUÇÃO
-    ir=mbr >> 24;                    //desloca 24 bits a direita ->> 0000 0000 0000 0000 0000 0000 0001 0011
+    ir=mbr >> 24;  
     printf("IR: %02x \n", ir);
+}
 
-    if (ir==0x00)
+void Decodifica(){
+     if (ir==0x00)
     {
         printf("Parada!!!\n");
         flagexecucao=false;
@@ -147,10 +130,9 @@ i=i+1;*/
         imm=(mbr & 0x001fffff);
         printf("Imm: %08x\n", imm);
     }
-
-    //EXECUÇÃO DA INSTRUÇÃO
-    //add
-    if(ir==0x02)
+}
+void Executa (){
+     if(ir==0x02)
     {
         reg[ro0]=reg[ro1]+reg[ro0];
         printf("resultado: %x\n",reg[ro0]);
@@ -413,6 +395,69 @@ i=i+1;*/
         printf("final: %012x\n", reg[ro0]);
         pc +=4;
     }
+}
+
+int main (){
+//ALOCAR MEMÓRIA PARA TESTES
+memory [0]= 0x13;
+memory [1]= 0x00;
+memory [2]= 0x00;
+memory [3]= 0x1e;
+memory [4]= 0x13;
+memory [5]= 0x20;
+memory [6]= 0x0;
+memory [7]= 0x24;
+memory [8]= 0x2;
+memory [9]= 0x4;
+memory [10]= 0x0;
+memory [11]= 0x0;
+memory [12]= 0x16;
+memory [13]= 0x0;
+memory [14]= 0x0;
+memory [15]= 0x14;
+memory [16]= 0x14;
+memory [17]= 0x0;
+memory [18]= 0x0;
+memory [19]= 0x26;
+memory [20]= 0x1;
+memory [21]= 0x0;
+memory [22]= 0x0;
+memory [23]= 0x0;
+memory [24]= 0x0;
+memory [25]= 0x0;
+memory [26]= 0x0;
+memory [27]= 0x0;
+memory [28]= 0x0;
+memory [29]= 0x0;
+memory [30]= 0x0;
+memory [31]= 0x0;
+memory [32]= 0x0;
+memory [33]= 0xf;
+memory [36]= 0x0;
+memory [37]= 0x0;
+memory [38]= 0x0;
+memory [39]= 0x8;
+memory [40]= 0x0;
+memory [41]= 0x0;
+memory [42]= 0x0;
+memory [43]= 0x0;
+memory [44]= 0x0;
+mbr=0;
+
+printf("mbr inicio: %x\n", mbr);
+
+while(flagexecucao){
+int i;
+i=i+1;
+/*for(int a=0;a<8;a++){
+int i;
+i=i+1;*/
+
+    printf("\t\t\t\t RODADA %d\n", i);
+
+    Busca();
+    Decodifica();
+    Executa();
 
     printf("----------------------------------------------------------------\n");
 //}
@@ -425,17 +470,6 @@ return 0;
 
 }
 
-
-/*
-flagexecucao=true;
-while(flagexecucao){
-    if(ir==0xa){
-        
-    }
-}
-*/
-
-//entrada por arquivo texto que ele irá explicar mais pra frente
 
 //gcc trabalho.c -o a.out -lm
 //./a.out
