@@ -20,56 +20,52 @@ unsigned char ir,  //opcode da instrução a ser executada
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
+void waitEnter() {
+    int value;
+    printf("\nPressione ENTER");
+
+    do {
+        value = getchar();
+    } while (value != '\n'); // 13 é o codigo ASCII do ENTER
+}
 
 void Print() {
     system("clear||cls");
-    printf("\n                      Máquina de Von Neuman\n\n");
-    //printf("Estágio: %s\n", phase);
-    printf(
-            "%s: 0x%x%10s: 0x%x%10s: 0x%x%10s: "
-            "0x%x%10s: 0x%x%10s: 0x%x%10s: %d%10s: "
-            "0x%x%10s: 0x%x%10s: 0x%x%10s: 0x%x"
-            "%10s :%c%10s :%c%10s :%c",
-            "R0", reg[0],
-            "R1", reg[1],
-            "R2", reg[2],
-            "R3", reg[3],
-            "RO0", ro0,
-            "RO1", ro1,
-            "\nIR", ir,
-            "MBR", mbr,
-            "MAR", mar,
-            "IMM", imm,
-            "PC", pc,
-            "\nE", e,
-            "L", l,
-            "G", g);
-    int p;
+    printf("\n\t\t-------------------------- MÁQUINA DE VON NEUMANN ---------------------------\n\n\n");
+    printf("CPU:\n");
+    printf("R0:  0x%08x \t\tR1:  0x%08x \t\tR2:  0x%08x \t\tR3:  0x%08x\nR4:  0x%08x \t\tR5:  0x%08x \t\tR6:  0x%08x \t\tR7:  0x%08x\nMBR: 0x%08x \t\tMAR: 0x%08x \t\tIMM: 0x%08x \t\tPC:  0x%08x\nIR:  0x%02x \t\t\tRO0: 0x%x \t\t\tRO1: 0x%x\nE:   0x%x \t\t\tL:   0x%x\t\t\tG:   0x%x",reg[0],reg[1],reg[2],reg[3],reg[4],reg[5],reg[6],reg[7],mbr,mar,imm,pc,ir,ro0,ro1,e,l,g);
+    int i;
     printf("\n\nMemória:\n");
-    for (p = 0; p < 154; p++) {
-        short int mem = memory[p];
-        if (mem < 0) {
-            mem = mem - 65280;
-        }
-        printf("  %03x:0x%03x", p, mem);
-        if (p % 7 == 6) {
+    for (i = 0; i < 154; i++) {
+        short int var = memory[i];
+        /*if (var < 0) {
+            var = var - 65280;
+        }*/
+        printf("  %02x:0x%02x", i, var);
+        if (i % 7 == 6) {
             printf("\n");
         }
     }
 }
 
 void Busca (){
+    Print();
+    waitEnter();
     mar=pc;
     mbr= memory[mar++] << 8;            
     mbr= (mbr | memory [mar++]) << 8;    
     mbr= (mbr | memory [mar++]) << 8;
     mbr= (mbr | memory [mar++]);
     ir=mbr >> 24;  
+    Print();
 }
 
 void Decodifica(){
+    Print();
+    waitEnter();
      if (ir==0x00){
         flagexecucao=false;
+        printf("Programa finalizado! Aperte enter para sair!");
     }else if(ir==0x01){
         pc+=1;
     }else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa){
@@ -102,8 +98,10 @@ void Decodifica(){
         ro0=(mbr & 0x00e00000) >>21; 
         imm=(mbr & 0x001fffff);
     }
+    Print();
 }
 void Executa (){
+    waitEnter();
     //add
      if(ir==0x02){
         reg[ro0]=reg[ro1]+reg[ro0];
@@ -276,6 +274,7 @@ void Executa (){
         reg[ro0]=reg[ro0]>>imm;
         pc +=4;
     }
+    Print();
 }
 
 int main (){
@@ -332,7 +331,6 @@ int i;
 i=i+1;
 
     printf("\t\t\t\t RODADA %d\n", i);
-    Print();
     Busca();
     Decodifica();
     Executa();
