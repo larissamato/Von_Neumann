@@ -20,6 +20,263 @@ unsigned char ir,  //opcode da instrução a ser executada
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
+void waitEnter() {
+    int value;
+    printf("\nPressione ENTER");
+
+    do {
+        value = getchar();
+    } while (value != '\n'); // 13 é o codigo ASCII do ENTER
+}
+
+void Print() {
+    system("clear||cls");
+    printf("\n\t\t-------------------------- MÁQUINA DE VON NEUMANN ---------------------------\n\n\n");
+    printf("CPU:\n");
+    printf("R0:  0x%08x \t\tR1:  0x%08x \t\tR2:  0x%08x \t\tR3:  0x%08x\nR4:  0x%08x \t\tR5:  0x%08x \t\tR6:  0x%08x \t\tR7:  0x%08x\nMBR: 0x%08x \t\tMAR: 0x%08x \t\tIMM: 0x%08x \t\tPC:  0x%08x\nIR:  0x%02x \t\t\tRO0: 0x%x \t\t\tRO1: 0x%x\nE:   0x%x \t\t\tL:   0x%x\t\t\tG:   0x%x",reg[0],reg[1],reg[2],reg[3],reg[4],reg[5],reg[6],reg[7],mbr,mar,imm,pc,ir,ro0,ro1,e,l,g);
+    int i;
+    printf("\n\nMemória:\n");
+    for (i = 0; i < 154; i++) {
+        short int var = memory[i];
+        /*if (var < 0) {
+            var = var - 65280;
+        }*/
+        printf("  %02x:0x%02x", i, var);
+        if (i % 7 == 6) {
+            printf("\n");
+        }
+    }
+}
+
+void Busca (){
+    Print();
+    waitEnter();
+    mar=pc;
+    mbr= memory[mar++] << 8;            
+    mbr= (mbr | memory [mar++]) << 8;    
+    mbr= (mbr | memory [mar++]) << 8;
+    mbr= (mbr | memory [mar++]);
+    ir=mbr >> 24;  
+    Print();
+}
+
+void Decodifica(){
+    Print();
+    waitEnter();
+     if (ir==0x00){
+        flagexecucao=false;
+        printf("Programa finalizado! Aperte enter para sair!");
+    }else if(ir==0x01){
+        pc+=1;
+    }else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa){
+        ro0=(mbr & 0x00e00000) >>21; 
+        ro1=(mbr & 0x001e0000) >>18; 
+
+    }else if(ir==0xb){
+        ro0=(mbr & 0x00e00000) >>21; 
+
+    }else if (ir==0xc || ir==0xd || ir==0xe || ir==0xf || ir==0x10 || ir==0x11 || ir==0x12){
+        mar=(mbr & 0x001fffff); 
+
+    }else if (ir==0x13){
+        if(flagrepeticao==false)
+        {
+            ro0=(mbr & 0x00e00000) >>21; 
+            mar=(mbr & 0x001fffff);
+        }
+        else if (flagrepeticao==true)
+        {
+            ro1=(mbr & 0x00e00000) >>21;      
+            mar=(mbr & 0x001fffff);
+        } 
+
+    }else if(ir==0x14){
+            ro0=(mbr & 0x00e00000) >>21;      
+            mar=(mbr & 0x001fffff); 
+            
+    }else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19 || ir==0x1a || ir==0x1b){
+        ro0=(mbr & 0x00e00000) >>21; 
+        imm=(mbr & 0x001fffff);
+    }
+    Print();
+}
+void Executa (){
+    waitEnter();
+    //add
+     if(ir==0x02){
+        reg[ro0]=reg[ro1]+reg[ro0];
+        pc +=4;}
+    //sub
+    else if(ir==0x03){
+        reg[ro0]=reg[ro0]-reg[ro1];
+        pc +=4;}
+    //mul
+    else if(ir==0x04){
+        reg[ro0]=reg[ro0]*reg[ro1];
+        pc +=4;}
+    //div
+    else if(ir==0x05){
+        reg[ro0]=reg[ro0]/reg[ro1];
+        pc +=4;}
+    //cmp
+    else if(ir==0x06){
+       if(reg[ro0]==reg[ro1]){
+           e=1;
+           pc+=4;
+       }else if(reg[ro0]<reg[ro1]){
+           l=1;
+           g=0;
+           e=0;
+           pc+=4;
+       }else if(reg[ro0]>reg[ro1]){
+           l=0;
+           g=1;
+           e=0;
+           pc+=4;
+       }
+    }
+    //movr
+    else if(ir==0x07){
+        reg[ro0]=reg[ro1];
+        pc +=4;}
+    //and
+    else if(ir==0x08){
+        reg[ro0]=reg[ro0]&reg[ro1];
+        pc +=4;}
+    //or
+    else if(ir==0x09){
+        reg[ro0]=reg[ro0]|reg[ro1];
+        pc +=4;}
+    //xor
+    else if(ir==0x0a){
+        reg[ro0]=reg[ro0]^reg[ro1];
+        pc +=4;}
+    //not
+    else if(ir==0x0b){
+        reg[ro0]=!reg[ro0];
+        pc +=4;}
+    //je
+    else if(ir==0x0c){   
+        if(e==1){
+        pc=mar;
+        }else {
+        pc+=4;
+        }
+    }
+    //jne
+    else if(ir==0x0d){
+       if(e==0){
+        pc=mar;
+        }else{
+        pc+=4;
+        }
+    }
+    //jl
+    else if(ir==0x0e){
+        if(l==1){
+        pc=mar;
+        }else{
+        pc+=4;
+        }
+    }
+    //jle
+    else if(ir==0x0f){
+        if(e==1 || l==1){
+        pc=mar;
+        }else{
+        pc+=4;
+        }
+    }
+    //jg
+    else if(ir==0x10){
+        if(g==1){
+        pc=mar;
+        }else{
+        pc+=4;
+        }
+    }
+    //jge
+    else if(ir==0x11){
+        if(e==1 || g==1){
+        pc=mar;
+        }else{
+        pc+=4;
+        }
+    }
+    //jmp
+    else if(ir==0x12){
+        pc=mar;
+    }
+    //load
+    else if(ir==0x13){
+        if(flagrepeticao==false)
+        {
+            mbr= memory[mar++] << 8;             
+            mbr= (mbr | memory [mar++]) << 8;    
+            mbr= (mbr | memory [mar++]) << 8;
+            mbr= memory [mar++];
+            reg[ro0]=mbr;
+            flagrepeticao=true;
+            pc +=4;
+        }
+        else if(flagrepeticao==true)
+        {
+            mbr= memory[mar++] << 8;             
+            mbr= (mbr | memory [mar++]) << 8;    
+            mbr= (mbr | memory [mar++]) << 8;
+            mbr= memory [mar++];
+            reg[ro1]=mbr; 
+            pc +=4;
+        }
+    }
+    //store
+    else if(ir==0x14){
+    mbr=reg[ro0];
+    memory [mar++]=(mbr>>24) & 0x0000000f; 
+    memory [mar++]=(mbr>>16) & 0x00000f00;    
+    memory [mar++]=(mbr>>8) & 0x000f0000;
+    memory [mar]=mbr;
+    pc+=4;
+    
+    }
+    //movi
+     else if(ir==0x15){
+        reg[ro0]=imm;
+        pc +=4;
+    }  
+    //addi
+    else if(ir==0x16){
+        reg[ro0]=reg[ro0]+imm;
+        pc +=4;
+    } 
+    //subi
+    else if(ir==0x17){
+        reg[ro0]=reg[ro0]-imm;
+        pc +=4;
+    } 
+    //muli
+    else if(ir==0x18){
+        reg[ro0]=imm*reg[ro0];
+        pc +=4;
+    } 
+    //divi
+    else if(ir==0x19){
+        reg[ro0]=reg[ro0]/imm;
+        pc +=4;
+    }
+    //lsh
+    else if(ir==0x1a){   
+        reg[ro0]=reg[ro0]<<imm;
+        pc +=4;
+    }
+    //rsh
+    else if(ir==0x1b){   
+        reg[ro0]=reg[ro0]>>imm;
+        pc +=4;
+    }
+    Print();
+}
+
 int main (){
 //ALOCAR MEMÓRIA PARA TESTES
 memory [0]= 0x13;
@@ -42,11 +299,11 @@ memory [16]= 0x14;
 memory [17]= 0x0;
 memory [18]= 0x0;
 memory [19]= 0x26;
-memory [20]= 0x0;
+memory [20]= 0x1;
 memory [21]= 0x0;
 memory [22]= 0x0;
 memory [23]= 0x0;
-memory [24]= 0x14;
+memory [24]= 0x0;
 memory [25]= 0x0;
 memory [26]= 0x0;
 memory [27]= 0x0;
@@ -60,204 +317,29 @@ memory [36]= 0x0;
 memory [37]= 0x0;
 memory [38]= 0x0;
 memory [39]= 0x8;
-
+memory [40]= 0x0;
+memory [41]= 0x0;
+memory [42]= 0x0;
+memory [43]= 0x0;
+memory [44]= 0x0;
 mbr=0;
-ir=1;
 
 printf("mbr inicio: %x\n", mbr);
-
-
 
 while(flagexecucao){
 int i;
 i=i+1;
+
     printf("\t\t\t\t RODADA %d\n", i);
-    //ALOCANDO INSTRUÇÃO NO MBR
-    mar=pc;
-    mbr= memory[mar++] << 8;             // 0000 0000 0000 0000 0000 0000 0001 0011
-    mbr= (mbr | memory [mar++]) << 8;    // 0000 0000 0000 0000 0001 0011 0000 0000
-    mbr= (mbr | memory [mar++]) << 8;
-    mbr= (mbr | memory [mar++]);
-    printf("mbr alocado: %08x\n", mbr);
+    Busca();
+    Decodifica();
+    Executa();
 
-
-    //DECODIFICAÇÃO DA INSTRUÇÃO
-    ir=mbr >> 24;                    //desloca 24 bits a direita ->> 0000 0000 0000 0000 0000 0000 0001 0011
-    printf("IR: %02x \n", ir);
-
-    if (ir==0x00){
-        printf("Parada!!!\n");
-        flagexecucao=false;
-    }
-    else if(ir==0x01){
-        printf("oi");
-    }
-    else if(ir==0x2 || ir==0x3|| ir==0x4 || ir==0x5 || ir==0x6 || ir==0x7 || ir==0x8 || ir==0x9 || ir==0xa){
-
-        ro0=(mbr & 0x00e00000) >>21; 
-        ro1=(mbr & 0x001e0000) >>18; 
-
-    }
-    else if(ir==0xb){
-        ro0=(mbr & 0x00e00000) >>21; 
-    }
-
-    else if (ir==0x13){
-
-        if(flagrepeticao==false)
-        {
-            ro0=(mbr & 0x00e00000) >>21;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
-            printf("Ro0: %02x\n",ro0); 
-            mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
-            printf("Mar: %08x\n", mar);
-        }
-        else if (flagrepeticao==true)
-        {
-            //ro1=(mbr & 0x001e0000) >>18;       //por tudo está agrupado em grupo de 4 o valor acaba mudando--> 1010=a 101=5
-            ro1=(mbr & 0x00e00000) >>21;  
-            printf("Ro1: %02x\n",ro1);     
-            mar=(mbr & 0x001fffff); //máscara 0000 0000 0001 1111 1111 1111 1111 1111 
-            printf("Mar: %08x\n", mar);
-        }      
-    }
-        else if (ir==0x15 || ir==0x16 || ir==0x17 || ir==0x18 || ir==0x19){
-        //addi
-        ro0=(mbr & 0x00e00000) >>21; 
-        printf("Ro0: %02x\n",ro0); 
-        imm=(mbr & 0x001fffff);
-        printf("Imm: %08x\n", imm);
-
-    }
-
-    //EXECUÇÃO DA INSTRUÇÃO
-    if(ir==0x13){
-
-        if(flagrepeticao==false)
-        {
-            mbr= memory[mar++] << 8;             
-            mbr= (mbr | memory [mar++]) << 8;    
-            mbr= (mbr | memory [mar++]) << 8;
-            mbr= memory [mar++];
-            reg[ro0]=mbr;
-            flagrepeticao=true;
-            printf("reg: %08x\n", reg[ro0]);
-
-            pc +=4;
-        }
-        else if(flagrepeticao==true)
-        {
-            mbr= memory[mar++] << 8;             
-            mbr= (mbr | memory [mar++]) << 8;    
-            mbr= (mbr | memory [mar++]) << 8;
-            mbr= memory [mar++];
-            reg[ro1]=mbr; 
-            printf("reg ro1: %08x\n", reg[ro1]);
-           pc +=4;
-        }
-
-    }
-     else if(ir==0x15)
-    {
-        reg[ro0]=imm;
-        printf("final: %08x\n", reg[ro0]);
-        pc +=4;
-    }  
-    else if(ir==0x16)
-    {
-        reg[ro0]=reg[ro0]+imm;
-        printf("final: %08x\n", reg[ro0]);
-        pc +=8;
-    } 
-    else if(ir==0x17)
-    {
-        reg[ro0]=reg[ro0]-imm;
-        printf("final: %08x\n", reg[ro0]);
-        pc +=4;
-    } 
-    else if(ir==0x18)
-    {
-        reg[ro0]=imm*reg[ro0];
-        printf("final: %08x\n", reg[ro0]);
-        pc +=4;
-    } 
-    else if(ir==0x19)
-    {
-        reg[ro0]=reg[ro0]/imm;
-        printf("final: %08x\n", reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x02)
-    {
-        reg[ro0]=reg[ro1]+reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x03)
-    {
-        reg[ro0]=reg[ro0]-reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x04)
-    {
-        reg[ro0]=reg[ro0]*reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x05)
-    {
-        reg[ro0]=reg[ro0]/reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x08)
-    {
-        reg[ro0]=reg[ro0]&reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x09)
-    {
-        reg[ro0]=reg[ro0]|reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x0a)
-    {
-        reg[ro0]=reg[ro0]^reg[ro1];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x0b)
-    {
-        reg[ro0]=!reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
-    else if(ir==0x14)
-    {
-        reg[ro0]=!reg[ro0];
-        printf("resultado: %x\n",reg[ro0]);
-        pc +=4;
-    }
     printf("----------------------------------------------------------------\n");
 }
 return 0;
-
-
 }
 
-
-/*
-flagexecucao=true;
-while(flagexecucao){
-    if(ir==0xa){
-        
-    }
-}
-*/
-
-//entrada por arquivo texto que ele irá explicar mais pra frente
 
 //gcc trabalho.c -o a.out -lm
 //./a.out

@@ -20,7 +20,7 @@ unsigned char ir,  //opcode da instrução a ser executada
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
-void waitEnter() {
+void Clique() {
     int value;
     printf("\nPressione ENTER");
 
@@ -50,7 +50,7 @@ void Print() {
 
 void Busca (){
     Print();
-    waitEnter();
+    Clique();
     mar=pc;
     mbr= memory[mar++] << 8;            
     mbr= (mbr | memory [mar++]) << 8;    
@@ -62,7 +62,7 @@ void Busca (){
 
 void Decodifica(){
     Print();
-    waitEnter();
+    Clique();
      if (ir==0x00){
         flagexecucao=false;
         printf("Programa finalizado! Aperte enter para sair!");
@@ -101,7 +101,7 @@ void Decodifica(){
     Print();
 }
 void Executa (){
-    waitEnter();
+    Clique();
     //add
      if(ir==0x02){
         reg[ro0]=reg[ro1]+reg[ro0];
@@ -276,6 +276,7 @@ void Executa (){
     }
     Print();
 }
+
 
 int main (){
 //ALOCAR MEMÓRIA PARA TESTES
