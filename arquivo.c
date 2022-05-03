@@ -27,11 +27,14 @@ unsigned char ir,  //opcode da instrução a ser executada
      printf("Problemas na abertura do arquivo\n");
      return;
   }
+
+  //******************************************************
+
   i = 1;
   while (!feof(arq))
   {
 	// Lê uma linha (inclusive com o '\n')
-      result = fgets(Linha, 100, arq);  // o 'fgets' lê até 99 caracteres ou até o '\n'
+      result = fgets(Linha, 100, arq); // Lê o arquivo e coloca em um vetor de caracter 
       if (result)  // Se foi possível ler
 	  printf("Linha %d : %s",i,Linha);
       i++;
@@ -41,16 +44,16 @@ unsigned char ir,  //opcode da instrução a ser executada
    char str[80] = "This is - www.tutorialspoint.com - website";
    const char s[2] = "-";
    char *token;
-   
+
    /* get the first token */
    token = strtok(str, s);
-   
+
    /* walk through other tokens */
    while( token != NULL ) {
       printf( " %s\n", token );
-    
+
       token = strtok(NULL, s);
    }
-   
+
 
 }
