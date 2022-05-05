@@ -20,12 +20,6 @@ unsigned char ir,  //opcode da instrução a ser executada
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
-
-
-
-
-
-
 void Clique() {
     int value;
     printf("\nPressione ENTER");
