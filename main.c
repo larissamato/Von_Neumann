@@ -26,52 +26,6 @@ bool flagexecucao=true;
 unsigned int flagrepeticao=false;
 
 
-
-void Entrada(){
-//Declaração
-unsigned int mar2, inteiro, i=0;
-unsigned char tipo,valor;
-// ABRE O ARQUIVO 
-arquivo = fopen("teste.txt", "rt");
-// SE HOUVER ALGUM ERRO NA ABERTURA
- if (arquivo == NULL)  
-    {
-          printf("Problemas na abertura do arquivo\n");
-        return;
-    }
- i = 1;
-while (!feof(arquivo)){ 
-    // LÊ AS LINHAS E COLOCA EM UM VETOR DE CARACTER
-    resultado = fgets(linha, 100, arquivo);  
-    // QUEBRA DE LINHA NA MARCAÇÃO ;
-    resultado = strtok(linha, s);
-    mar2 = (int)strtol(resultado,NULL,16);
-    printf("Linha %d : %s\n",i,linha);
-    i++; // CONTAGEM DA LINHA 
-}
-while(resultado !=NULL) {
-    if(contador==1){
-        tipo=*resultado;
-    }else if(contador==2){
-        if(tipo==0x64){
-            inteiro=(int) strtol(resultado,NULL,16);
-            memory[mar2++] = (inteiro & 0xff000000) >> 24;
-            memory[mar2++] = (inteiro & 0x00ff0000) >> 16;
-            memory[mar2++] = (inteiro & 0x0000ff00) >> 8;
-            memory[mar2]   = (inteiro & 0x000000ff);
-            printf("Print TESTE:%d", inteiro);
-        }else{
-            //Função para colocar instrução na memória.
-        }
-    }
-
-           resultado = strtok(NULL ,";");
-            contador++;
-        }
-            contador= 0;
- fclose(arquivo);
-}
-
 void Clique() {
     int value;
     printf("\nPressione ENTER");
@@ -284,10 +238,10 @@ void Executa (){
     //store
     else if(ir==0x14){
     mbr=reg[ro0];
-    memory [mar++]=(mbr>>24) & 0x0000000f; 
-    memory [mar++]=(mbr>>16) & 0x00000f00;    
-    memory [mar++]=(mbr>>8) & 0x000f0000;
-    memory [mar]=mbr;
+    memory [mar++]=(mbr>>24) & 0xff; 
+    memory [mar++]=(mbr>>16) & 0xff;    
+    memory [mar++]=(mbr>>8) & 0xff;
+    memory [mar]=mbr & 0xff;
     pc+=4;
     
     }

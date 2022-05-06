@@ -21,9 +21,12 @@ char *token;
 char str[100];
 char tipoinstrucao[10];
 const char s[2] = ";";
-const char u[2] = ",";
 //const char u[2] = " ,";
 unsigned int contador=0;
+char compara[10];
+char flag[10];
+unsigned int flagrepeticaoAloca=false;
+
 
 void Print() {
     //system("clear||cls");
@@ -44,35 +47,64 @@ void Print() {
     }
 }
 
-void guardarMemoria(unsigned int mar2 ,unsigned int controle){
-    memory [mar2++]=(controle>>24) & 0x0000000f; 
-    memory [mar2++]=(controle>>16) & 0x00000f00;    
-    memory [mar2++]=(controle>>8) & 0x000f0000;
-    memory [mar2]=controle;
+void guardarMemoria(unsigned int mar2 ,unsigned int palavra){
+    memory [mar2++]=(palavra>>24) & 0xff; 
+    memory [mar2++]=(palavra>>16) & 0xff;    
+    memory [mar2++]=(palavra>>8) & 0xff;
+    memory [mar2]=palavra & 0xff;
 }
 
 void Instrucao (int mar2){
-    unsigned char *token1, Tro0;
-    unsigned int count=0, endImm=0;
-
-    token1 = strtok(str,",");
+    char *token1, Tro0;
+    unsigned int count=0, endImm=0, tipo;
+    printf("mar:%d", mar2);
+    token1 = strtok(token," ,");
     while(token1){
         printf("TOKEN INSTRUÇÃÇO: %s\n",token1);
         if(count==0){
-             = (*token=='ld') ? 0x13:0;
-            printf("Print tipo:%i ---- %x\n", tipopalavra,tipopalavra);
+            strcpy(compara,token1);
+            printf("TOKEN COMPARA: %s\n",compara);
         }else if(count==1){
-            Tro0=(int)strtol(token1,NULL,16);
+            strcpy(flag,token1);
+            if(flag=="r1"){
+              Tro0=(int)strtol(0x20,NULL,16);
+            }
        
         }else if(count==2){
             endImm=(int)strtol(token1,NULL,16);
+            printf("TOKEN endImm: %x\n",endImm);
 
         }
             
         token1 = strtok(NULL," ,");
         count++;
     }
-        
+    if(strcmp(compara,"hlt")== 0){
+    unsigned int palavra = 0x00;
+    palavra=(palavra<<24)|endImm;
+    guardarMemoria(mar2,palavra);
+    //printf("palavra %x", palavra);
+    } 
+    if(strcmp(compara,"nop")== 0){
+    unsigned int palavra = 0x01;
+    palavra=(palavra<<24)|endImm;
+    guardarMemoria(mar2,palavra);
+    //printf("palavra %x", palavra);
+    } 
+    if(strcmp(compara,"add")== 0){
+    unsigned int palavra = 0x02;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<3)|endImm;
+    guardarMemoria(mar2,palavra);
+    //printf("palavra %x", palavra);
+    } 
+    if(strcmp(compara,"ld")== 0){
+        unsigned int palavra = 0x13;
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }      
 }
 
 void Entrada(){
@@ -191,9 +223,16 @@ int main()
         }
     } while (strlen(string) > 0);
     fclose(pf);
-}*/
+}
+0001 0011 0000 0000 0000 0000 1001 0010
+f     f    0    0    0     0   0     0
+*/
 
 int main(){
+
+    int teste;
+    teste=0x20;
+    printf("%x", teste);
     Entrada();
     Print();
     return 0;
