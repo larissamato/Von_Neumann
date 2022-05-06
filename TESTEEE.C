@@ -55,21 +55,20 @@ void Instrucao (int mar2){
     unsigned char *token1, Tro0;
     unsigned int count=0, endImm=0;
 
-    token1 = strtok(token,u);
+    token1 = strtok(str,",");
     while(token1){
-        printf("TOKEN INSTRUÇÃO: %s\n",token1);
+        printf("TOKEN INSTRUÇÃÇO: %s\n",token1);
         if(count==0){
-            tipopalavra = (*token=='i') ? 1:0;
+             = (*token=='ld') ? 0x13:0;
             printf("Print tipo:%i ---- %x\n", tipopalavra,tipopalavra);
-        if(count==1){
+        }else if(count==1){
             Tro0=(int)strtol(token1,NULL,16);
-        }
-        if(count==2){
+       
+        }else if(count==2){
             endImm=(int)strtol(token1,NULL,16);
 
         }
             
-        }
         token1 = strtok(NULL," ,");
         count++;
     }
@@ -114,7 +113,7 @@ void Entrada(){
                     memory [mar2]=inteiro;
                     printf("Print dado guardado:%x\n", inteiro);
                 }else{
-                Instrucao();
+                Instrucao(mar2);
                 }
             }
 
