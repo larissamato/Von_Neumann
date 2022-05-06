@@ -19,8 +19,10 @@ unsigned char ir,  //opcode da instrução a ser executada
 FILE *arquivo;
 char *token;
 char str[100];
+char tipoinstrucao[10];
 const char s[2] = ";";
 const char u[2] = ",";
+//const char u[2] = " ,";
 unsigned int contador=0;
 
 void Print() {
@@ -42,31 +44,36 @@ void Print() {
     }
 }
 
-void Instrucao (){
-    char *token1, ro0, *token2;
-    unsigned int count=0, tipoinstrucao,count2=0;
+void guardarMemoria(unsigned int mar2 ,unsigned int controle){
+    memory [mar2++]=(controle>>24) & 0x0000000f; 
+    memory [mar2++]=(controle>>16) & 0x00000f00;    
+    memory [mar2++]=(controle>>8) & 0x000f0000;
+    memory [mar2]=controle;
+}
 
-    token1= strtok(token,u);
+void Instrucao (int mar2){
+    unsigned char *token1, Tro0;
+    unsigned int count=0, endImm=0;
+
+    token1 = strtok(token,u);
     while(token1){
         printf("TOKEN INSTRUÇÃO: %s\n",token1);
         if(count==0){
-            token2=strtok(token1," ");
-            while(token2){
-                if(count2==0){
-                    printf("TOKEN: %s\n", token2);
-                }
-                if (count2==1){
-                    printf("Numero %s",token2);
-                    
-                }
-               printf("TOKEN INSTRUÇÃO: %s\n",token2); 
-                token2 = strtok(NULL," ");
-            }
+            tipopalavra = (*token=='i') ? 1:0;
+            printf("Print tipo:%i ---- %x\n", tipopalavra,tipopalavra);
+        if(count==1){
+            Tro0=(int)strtol(token1,NULL,16);
+        }
+        if(count==2){
+            endImm=(int)strtol(token1,NULL,16);
+
+        }
             
         }
-        token1 = strtok(NULL,",");
-
+        token1 = strtok(NULL," ,");
+        count++;
     }
+        
 }
 
 void Entrada(){
@@ -189,7 +196,7 @@ int main()
 
 int main(){
     Entrada();
-    //Print();
+    Print();
     return 0;
 }
     
