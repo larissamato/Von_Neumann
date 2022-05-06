@@ -43,13 +43,27 @@ void Print() {
 }
 
 void Instrucao (){
-    char *token1, ro0;
-    unsigned int count =0, controle;
+    char *token1, ro0, *token2;
+    unsigned int count=0, tipoinstrucao,count2=0;
 
     token1= strtok(token,u);
     while(token1){
-
         printf("TOKEN INSTRUÇÃO: %s\n",token1);
+        if(count==0){
+            token2=strtok(token1," ");
+            while(token2){
+                if(count2==0){
+                    printf("TOKEN: %s\n", token2);
+                }
+                if (count2==1){
+                    printf("Numero %s",token2);
+                    
+                }
+               printf("TOKEN INSTRUÇÃO: %s\n",token2); 
+                token2 = strtok(NULL," ");
+            }
+            
+        }
         token1 = strtok(NULL,",");
 
     }
