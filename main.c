@@ -3,6 +3,11 @@
 #include <math.h>
 #include <stdbool.h>
 
+FILE *arquivo;
+char *resultado;
+char linha[100];
+const char s[2] = ";";
+unsigned int contador=0;
 
 //SERÁ UTILIZADO VARIÁVEIS GLOBAIS
 unsigned char memory [154]; //memória RAM
@@ -19,6 +24,53 @@ unsigned char ir,  //opcode da instrução a ser executada
               g;
 bool flagexecucao=true;
 unsigned int flagrepeticao=false;
+
+
+
+void Entrada(){
+//Declaração
+unsigned int mar2, inteiro, i=0;
+unsigned char tipo,valor;
+// ABRE O ARQUIVO 
+arquivo = fopen("teste.txt", "rt");
+// SE HOUVER ALGUM ERRO NA ABERTURA
+ if (arquivo == NULL)  
+    {
+          printf("Problemas na abertura do arquivo\n");
+        return;
+    }
+ i = 1;
+while (!feof(arquivo)){ 
+    // LÊ AS LINHAS E COLOCA EM UM VETOR DE CARACTER
+    resultado = fgets(linha, 100, arquivo);  
+    // QUEBRA DE LINHA NA MARCAÇÃO ;
+    resultado = strtok(linha, s);
+    mar2 = (int)strtol(resultado,NULL,16);
+    printf("Linha %d : %s\n",i,linha);
+    i++; // CONTAGEM DA LINHA 
+}
+while(resultado !=NULL) {
+    if(contador==1){
+        tipo=*resultado;
+    }else if(contador==2){
+        if(tipo==0x64){
+            inteiro=(int) strtol(resultado,NULL,16);
+            memory[mar2++] = (inteiro & 0xff000000) >> 24;
+            memory[mar2++] = (inteiro & 0x00ff0000) >> 16;
+            memory[mar2++] = (inteiro & 0x0000ff00) >> 8;
+            memory[mar2]   = (inteiro & 0x000000ff);
+            printf("Print TESTE:%d", inteiro);
+        }else{
+            //Função para colocar instrução na memória.
+        }
+    }
+
+           resultado = strtok(NULL ,";");
+            contador++;
+        }
+            contador= 0;
+ fclose(arquivo);
+}
 
 void Clique() {
     int value;

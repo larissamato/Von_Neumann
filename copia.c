@@ -4,7 +4,6 @@
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
-
 FILE *arq;
 char *pl ;
 char str[50];
@@ -215,6 +214,7 @@ void lerTexto(){
                     memoria[mem++] = (val & 0x00ff0000) >> 16;
                     memoria[mem++] = (val & 0x0000ff00) >> 8;
                     memoria[mem]   = (val & 0x000000ff);
+                    printf("%d", val)
                 }else{ //se for instrução
                     colocarInstru(mem);
                 }
