@@ -324,12 +324,16 @@ void Entrada(){
             }
             else if(contador==2){
                 if(tipopalavra==0){
+                    printf("mar2 %x", mar2);
                     inteiro=(int) strtol(token,NULL,16);
-                    memory [mar2++]=(inteiro>>24) & 0x0000000f; 
-                    memory [mar2++]=(inteiro>>16) & 0x00000f00;    
-                    memory [mar2++]=(inteiro>>8) & 0x000f0000;
+                    memory [mar2]=(inteiro>>24) & 0x0000000f; 
+                    printf("mar2 %x", mar2);
+                    memory [mar2]=(inteiro>>16) & 0x00000f00;  
+                    printf("mar2 %x", mar2);  
+                    memory [mar2]=(inteiro>>8) & 0x000f0000;
+                    printf("mar2 %x", mar2);
                     memory [mar2]=inteiro;
-                    //printf("Print dado guardado:%x\n", inteiro);
+                    printf("Print dado guardado:%x\n", inteiro);
                 }else{
                 Instrucao(mar2);
                 }

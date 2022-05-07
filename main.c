@@ -306,7 +306,7 @@ void Instrucao (int mar2){
 }
 
 void Entrada(){
-    unsigned int mar2, inteiro, i=1;
+    unsigned int mar2=0, inteiro, i=1;
     unsigned int tipopalavra;
     unsigned char tipo,valor;
 
@@ -337,10 +337,10 @@ void Entrada(){
             else if(contador==2){
                 if(tipopalavra==0){
                     inteiro=(int) strtol(token,NULL,16);
-                    memory [mar2++]=(inteiro>>24) & 0x0000000f; 
-                    memory [mar2++]=(inteiro>>16) & 0x00000f00;    
-                    memory [mar2++]=(inteiro>>8) & 0x000f0000;
-                    memory [mar2]=inteiro;
+                    memory [mar2++]=(inteiro>>24) & 0xff; 
+                    memory [mar2++]=(inteiro>>16) & 0xff;    
+                    memory [mar2++]=(inteiro>>8) & 0xff;
+                    memory [mar2]=inteiro & 0xff;
                     //printf("Print dado guardado:%x\n", inteiro);
                 }else{
                 Instrucao(mar2);
