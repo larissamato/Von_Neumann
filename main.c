@@ -1,3 +1,7 @@
+//Terminal linux
+//gcc main.c -o a.out -lm
+//./a.out
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -48,16 +52,12 @@ void Print() {
     printf("\n\nMemória:\n");
     for (i = 0; i < 154; i++) {
         short int var = memory[i];
-        /*if (var < 0) {
-            var = var - 65280;
-        }*/
         printf("  %02x:0x%02x", i, var);
         if (i % 7 == 6) {
             printf("\n");
         }
     }
 }
-
 
 void guardarMemoria(unsigned int mar2 ,unsigned int palavra){
     memory [mar2++]=(palavra>>24) & 0xff; 
@@ -182,14 +182,14 @@ void Instrucao (int mar2){
         palavra=(palavra<<18);
         guardarMemoria(mar2,palavra);
     }
-    if(strcmp(compara,"not")== 0){
+     if(strcmp(compara,"not")== 0){
     unsigned int palavra = 0x0b;
     Tro0 = strtol(&flag[1], NULL, 10);
     palavra=(palavra<<3)|Tro0;
     palavra=(palavra<<21)|endImm;
     guardarMemoria(mar2,palavra);
     }
-    if(strcmp(compara,"je")== 0){
+     if(strcmp(compara,"je")== 0){
     unsigned int palavra = 0x0c;
     palavra=(palavra<<3)|Tro0;
     palavra=(palavra<<21)|endImm;
@@ -336,7 +336,7 @@ void Entrada(){
             }
             else if(contador==2){
                 if(tipopalavra==0){
-                    inteiro=(int) strtol(token,NULL,16);
+                    inteiro=(int) strtol(token,NULL,10);
                     memory [mar2++]=(inteiro>>24) & 0xff; 
                     memory [mar2++]=(inteiro>>16) & 0xff;    
                     memory [mar2++]=(inteiro>>8) & 0xff;

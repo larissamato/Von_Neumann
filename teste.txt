@@ -1,7 +1,7 @@
 0;i;ld r0, 1e
 4;i;ld r1, 24
 8;i;add r0, r1
-c;i;addi r0, 20
+c;i;addi r0, 14
 10;i;st r0, 26
 14;i;hlt
 1e;d;15
