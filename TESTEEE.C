@@ -21,10 +21,10 @@ char *token;
 char str[100];
 char tipoinstrucao[10];
 const char s[2] = ";";
-//const char u[2] = " ,";
 unsigned int contador=0;
 char compara[10];
 char flag[10];
+char flagedimm[10];
 unsigned int flagrepeticaoAloca=false;
 
 
@@ -57,22 +57,20 @@ void guardarMemoria(unsigned int mar2 ,unsigned int palavra){
 void Instrucao (int mar2){
     char *token1, Tro0;
     unsigned int count=0, endImm=0, tipo;
-    printf("mar:%d", mar2);
+    //printf("mar:%d", mar2);
     token1 = strtok(token," ,");
     while(token1){
-        printf("TOKEN INSTRUÇÃÇO: %s\n",token1);
+        //printf("TOKEN INSTRUÇÃÇO: %s\n",token1);
         if(count==0){
             strcpy(compara,token1);
-            printf("TOKEN COMPARA: %s\n",compara);
+            //printf("TOKEN COMPARA: %s\n",compara);
         }else if(count==1){
+            Tro0=(int)strtol(token1,NULL,16);
             strcpy(flag,token1);
-            if(flag=="r1"){
-              Tro0=(int)strtol(0x20,NULL,16);
-            }
        
         }else if(count==2){
             endImm=(int)strtol(token1,NULL,16);
-            printf("TOKEN endImm: %x\n",endImm);
+            strcpy(flagedimm,token1);
 
         }
             
@@ -92,19 +90,207 @@ void Instrucao (int mar2){
     //printf("palavra %x", palavra);
     } 
     if(strcmp(compara,"add")== 0){
-    unsigned int palavra = 0x02;
-    palavra=(palavra<<3)|Tro0;
-    palavra=(palavra<<3)|endImm;
-    guardarMemoria(mar2,palavra);
-    //printf("palavra %x", palavra);
+        int palavra = 0x02;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
     } 
+    if(strcmp(compara,"sub")== 0){
+        int palavra = 0x03;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    } 
+     if(strcmp(compara,"mul")== 0){
+        int palavra = 0x04;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"div")== 0){
+        int palavra = 0x05;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"cmp")== 0){
+        int palavra = 0x06;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"movrr")== 0){
+        int palavra = 0x07;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"and")== 0){
+        int palavra = 0x08;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"or")== 0){
+        int palavra = 0x09;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"xor")== 0){
+        int palavra = 0xa;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        endImm = strtol(&flagedimm[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0; 
+        palavra=(palavra<<3)|endImm;
+        palavra=(palavra<<18);
+        guardarMemoria(mar2,palavra);
+    }
+    if(strcmp(compara,"not")== 0){
+    unsigned int palavra = 0x0b;
+    Tro0 = strtol(&flag[1], NULL, 10);
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+    if(strcmp(compara,"je")== 0){
+    unsigned int palavra = 0x0c;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"jne")== 0){
+    unsigned int palavra = 0x0d;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"jl")== 0){
+    unsigned int palavra = 0x0e;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+     if(strcmp(compara,"jle")== 0){
+    unsigned int palavra = 0x0f;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+    if(strcmp(compara,"jg")== 0){
+    unsigned int palavra = 0x10;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+    if(strcmp(compara,"jge")== 0){
+    unsigned int palavra = 0x11;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
+    if(strcmp(compara,"jmp")== 0){
+    unsigned int palavra = 0x12;
+    palavra=(palavra<<3)|Tro0;
+    palavra=(palavra<<21)|endImm;
+    guardarMemoria(mar2,palavra);
+    }
     if(strcmp(compara,"ld")== 0){
         unsigned int palavra = 0x13;
+        Tro0 = strtol(&flag[1], NULL, 10);
         palavra=(palavra<<3)|Tro0;
         palavra=(palavra<<21)|endImm;
         guardarMemoria(mar2,palavra);
-        printf("\t\t\t\tpalavra %x\n\n", palavra);
-    }      
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }
+     if(strcmp(compara,"st")== 0){
+        unsigned int palavra = 0x14;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }  
+    if(strcmp(compara,"movi")== 0){
+        unsigned int palavra = 0x15;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    } 
+    if(strcmp(compara,"addi")== 0){
+        unsigned int palavra = 0x16;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }   
+     if(strcmp(compara,"subi")== 0){
+        unsigned int palavra = 0x17;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }  
+    if(strcmp(compara,"muli")== 0){
+        unsigned int palavra = 0x18;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }
+    if(strcmp(compara,"divi")== 0){
+        unsigned int palavra = 0x19;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }  
+    if(strcmp(compara,"lsh")== 0){
+        unsigned int palavra = 0x1a;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }  
+     if(strcmp(compara,"rsh")== 0){
+        unsigned int palavra = 0x1b;
+        Tro0 = strtol(&flag[1], NULL, 10);
+        palavra=(palavra<<3)|Tro0;
+        palavra=(palavra<<21)|endImm;
+        guardarMemoria(mar2,palavra);
+        //printf("\t\t\t\tpalavra %x\n\n", palavra);
+    }          
 }
 
 void Entrada(){
@@ -125,16 +311,16 @@ void Entrada(){
     while (!feof(arquivo)){ 
         token = fgets(str, 100, arquivo);  
         token = strtok(str, s);
-        printf("Linha %d : %s\n",i,token);
+        //printf("Linha %d : %s\n",i,token);
 
         while(token) {
-            printf("token: %s\n",token);
+            //printf("token: %s\n",token);
             if(contador==0){
                 mar2 = (int)strtol(token,NULL,16);
-                printf("Print endereço:%i ---- %x\n", mar2,mar2);
+                //printf("Print endereço:%i ---- %x\n", mar2,mar2);
             }else if (contador==1){
                 tipopalavra = (*token=='i') ? 1:0;
-                printf("Print tipo:%i ---- %x\n", tipopalavra,tipopalavra);
+                //printf("Print tipo:%i ---- %x\n", tipopalavra,tipopalavra);
             }
             else if(contador==2){
                 if(tipopalavra==0){
@@ -143,7 +329,7 @@ void Entrada(){
                     memory [mar2++]=(inteiro>>16) & 0x00000f00;    
                     memory [mar2++]=(inteiro>>8) & 0x000f0000;
                     memory [mar2]=inteiro;
-                    printf("Print dado guardado:%x\n", inteiro);
+                    //printf("Print dado guardado:%x\n", inteiro);
                 }else{
                 Instrucao(mar2);
                 }
@@ -157,82 +343,8 @@ void Entrada(){
     fclose(arquivo);
 }
 
-
-/*void Alocar(){
-    unsigned char *pl1, ro0; // aux recebe ro0
-    unsigned int count = 0, memImm;
-
-    pl1 = strtok(pl," ,");
-    while(pl1){
-        if(count == 0){
-            strcpy(mine,pl1);
-        }
-        if (count== 1){
-            ro0 = (int)strtol(pl1,NULL,16);
-        }
-        if(count == 2){
-            memImm = (int)strtol(pl1,NULL,16);
-        }
-        pl1 = strtok(NULL," ,r");
-        count++;
-    }
-}*/
-/*#include <string.h>
-#include <stdio.h>
-
-int main () {
-   char str[80] = "This is - www.tutorialspoint.com - website";
-   const char s[2] = "-";
-   char *token;
-   
-   /* get the first token */
-   //token = strtok(str, s);
-   
-   /* walk through other tokens */
-   /*while( token != NULL ) {
-      printf( " %s\n", token );
-    
-      token = strtok(NULL, s);
-   }
-   
-   return(0);
-}*/
-
-/*#include <stdio.h>
-#include <stdlib.h>
-int main()
-{
-    FILE *pf;
-    char string[100];
-    if((pf = fopen("arquivo.txt","w")) ==NULL)
-    {
-        printf("\nNao consigo abrir o arquivo ! ");
-        exit(1);
-    }
-    do
-    {
-        printf("\nDigite uma nova string. Para terminar, digite <enter>: ");
-        gets(string);
-        fputs(string, pf);
-        putc('\n', pf);
-        if(ferror(pf))
-        {
-            perror("Erro na gravacao");
-            fclose(pf);
-            exit(1);
-        }
-    } while (strlen(string) > 0);
-    fclose(pf);
-}
-0001 0011 0000 0000 0000 0000 1001 0010
-f     f    0    0    0     0   0     0
-*/
-
 int main(){
 
-    int teste;
-    teste=0x20;
-    printf("%x", teste);
     Entrada();
     Print();
     return 0;

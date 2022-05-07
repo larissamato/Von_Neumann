@@ -1,28 +1,9 @@
-0;i;ld r0, 92
-4;i;ld r1, 96
-8;i;sub r0, r1
-c;i;ld r1, 8e
-10;i;div r1, r0
-14;i;ld r2, 8a
-18;i;mul r2, r1
-1c;i;mul r2,r1
-20;i;add r0, r1;
-24;i;st r1, 82
-28;i;hlt
-86;d;20
-8a;d;3
-8e;d;4
-92;d;5
-96;d;3
+0;i;ld r0, 1e
+4;i;ld r1, 24
+8;i;add r0, r1
+c;i;addi r0, 20
+10;i;st r0, 26
+14;i;hlt
+1e;d;15
+24;d;8
 
-
-  if(flagrepeticao==false)
-        {
-            ro0=(mbr & 0x00e00000) >>21; 
-            mar=(mbr & 0x001fffff);
-        }
-        else if (flagrepeticao==true)
-        {
-            ro1=(mbr & 0x00e00000) >>21;      
-            mar=(mbr & 0x001fffff);
-        }
