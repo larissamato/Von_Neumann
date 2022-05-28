@@ -4,7 +4,7 @@ Essa implementação simula uma CPU com o conjunto de instruções ISA (Instruct
 
 ## Diagrama da CPU com os registradores arquiteturais:
 
-![](/home/larissa/Área de Trabalho/WORKSPACE/Von_Neumann/imagens/diagrama.png)
+![](https://github.com/larissamato/Von_Neumann/blob/master/imagens/diagrama.png)
 
 ## Função de cada registrador arquitetural:
 
@@ -20,14 +20,14 @@ Essa implementação simula uma CPU com o conjunto de instruções ISA (Instruct
 
 ## Nomeclatura do conjunto de instruções: 
 
-![](/home/larissa/Área de Trabalho/WORKSPACE/Von_Neumann/imagens/instruções.png)
+![](https://github.com/larissamato/Von_Neumann/blob/master/imagens/instru%C3%A7%C3%B5es.png)
 
-![](/home/larissa/Área de Trabalho/WORKSPACE/Von_Neumann/imagens/instruções2.png)
+![](https://github.com/larissamato/Von_Neumann/blob/master/imagens/instru%C3%A7%C3%B5es2.png)
 
 ## Codificação das instruções:
 
-![](/home/larissa/Área de Trabalho/WORKSPACE/Von_Neumann/imagens/codificação.png)
+![](https://github.com/larissamato/Von_Neumann/blob/master/imagens/codifica%C3%A7%C3%A3o.png)
 
 ## Exemplo e binário e hexadecimal:
 
-![](/home/larissa/Área de Trabalho/WORKSPACE/Von_Neumann/imagens/exemplo.png)
+![](https://github.com/larissamato/Von_Neumann/blob/master/imagens/exemplo.png)
